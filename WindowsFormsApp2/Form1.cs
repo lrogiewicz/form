@@ -41,80 +41,157 @@ namespace WindowsFormsApp2
                         richTextBox1.AppendText("Zestaw " + nrzestawu + ". \r\n");
                         int indexa = line.IndexOf("a=");
                         int indexb = line.IndexOf("b=");
+                        int odleglosc = Math.Abs(indexa - indexb);
                         int indexend = line.IndexOf("/");
-                        string liczbaa = line.Substring((indexa + 3), (indexb - indexa - 5));
-                        richTextBox1.AppendText("Liczba a=" + liczbaa + "\r\n");
-                        string liczbab = line.Substring((indexb + 3), (indexend - indexb - 4));
-                        richTextBox1.AppendText("Liczba b=" + liczbab + "\r\n");
-                        try
+                        if (indexa < indexb)
                         {
-                            double a = Double.Parse(liczbaa);
-                            double b = Double.Parse(liczbab);
-                            for (int i = 1; i <= iloscdzialan; i++)
+                            string liczbaa = line.Substring((indexa + 3), (indexb - indexa - odleglosc + 1));
+                            richTextBox1.AppendText("Liczba a=" + liczbaa + "\r\n");
+                            string liczbab = line.Substring((indexb + 3), (indexend - indexb - 4));
+                            richTextBox1.AppendText("Liczba b=" + liczbab + "\r\n");
+                            try
                             {
-                                if (comboBox1.Text == "mnożenie")
+                                double a = Double.Parse(liczbaa);
+                                double b = Double.Parse(liczbab);
+                                for (int i = 1; i <= iloscdzialan; i++)
                                 {
-                                    richTextBox1.AppendText(a + "*" + b + "=" + (a * b) + "\r\n");
-                                    b = a * b;
-                                }
-                                else
-                                {
-                                    if (comboBox1.Text == "dzielenie")
+                                    if (comboBox1.Text == "mnożenie")
                                     {
-                                        if (b != 0)
-                                        {
-                                            richTextBox1.AppendText(a + "/" + b + "=" + (a / b) + "\r\n");
-                                            b = a / b;
-                                        }
-                                        else
-                                        {
-                                            richTextBox1.AppendText("Dzielenie przez zero jest niedozwolone. \r\n");
-                                            break;
-                                        }
-
+                                        double c = a * b;
+                                        richTextBox1.AppendText(a + "*" + b + "=" + c + "\r\n");
+                                        b = c;
                                     }
                                     else
                                     {
-                                        if (comboBox1.Text == "potęgowanie")
+                                        if (comboBox1.Text == "dzielenie")
                                         {
-                                            if (Double.IsInfinity(Math.Pow(a, b)) || Double.IsInfinity(b))
+                                            if (b != 0)
                                             {
-                                                richTextBox1.AppendText("Kolejny wynik jest za duży aby go wypisać. \r\n");
-                                                break;
+                                                double c = a / b;
+                                                richTextBox1.AppendText(a + "/" + b + "=" + c + "\r\n");
+                                                b = c;
                                             }
                                             else
                                             {
-                                                richTextBox1.AppendText(a + "^" + b + "=" + (Math.Pow(a, b)) + "\r\n");
-                                                b = Math.Pow(a, b);
+                                                richTextBox1.AppendText("Dzielenie przez zero jest niedozwolone. \r\n");
+                                                break;
                                             }
                                         }
                                         else
                                         {
-                                            if (comboBox1.Text == "odejmowanie")
+                                            if (comboBox1.Text == "potęgowanie")
                                             {
-                                                richTextBox1.AppendText(a + "-" + b + "=" + (a - b) + "\r\n");
-                                                b = a - b;
+                                                double c = Math.Pow(a, b);
+                                                if (Double.IsInfinity(c))
+                                                {
+                                                    richTextBox1.AppendText("Kolejny wynik jest za duży aby go wypisać. \r\n");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    richTextBox1.AppendText(a + "^" + b + "=" + c + "\r\n");
+                                                    b = c;
+                                                }
                                             }
-                                            else richTextBox1.Text = "Wybrano błędne działanie. \r\n";
+                                            else
+                                            {
+                                                if (comboBox1.Text == "odejmowanie")
+                                                {
+                                                    double c = a - b;
+                                                    richTextBox1.AppendText(a + "-" + b + "=" + c + "\r\n");
+                                                    b = c;
+                                                }
+                                                else richTextBox1.Text = "Wybrano błędne działanie. \r\n";
+                                            }
                                         }
                                     }
                                 }
                             }
+                            catch (FormatException)
+                            {
+                                richTextBox1.AppendText("Błędne dane w pliku xml. \r\n");
+                            }
+                            nrzestawu = nrzestawu + 1;
                         }
-                        catch (FormatException)
+                        else
                         {
-                            richTextBox1.AppendText("Błędne dane w pliku xml. \r\n");
+                            string liczbab = line.Substring((indexb + 3), (indexa - indexb - odleglosc + 1));
+                            richTextBox1.AppendText("Liczba b=" + liczbab + "\r\n");
+                            string liczbaa = line.Substring((indexa + 3), (indexend - indexa - 4));
+                            richTextBox1.AppendText("Liczba a=" + liczbaa + "\r\n");
+                            try
+                            {
+                                double a = Double.Parse(liczbaa);
+                                double b = Double.Parse(liczbab);
+                                for (int i = 1; i <= iloscdzialan; i++)
+                                {
+                                    if (comboBox1.Text == "mnożenie")
+                                    {
+                                        double c = a * b;
+                                        richTextBox1.AppendText(a + "*" + b + "=" + c + "\r\n");
+                                        b = c;
+                                    }
+                                    else
+                                    {
+                                        if (comboBox1.Text == "dzielenie")
+                                        {
+                                            if (b != 0)
+                                            {
+                                                double c = a / b;
+                                                richTextBox1.AppendText(a + "/" + b + "=" + c + "\r\n");
+                                                b = c;
+                                            }
+                                            else
+                                            {
+                                                richTextBox1.AppendText("Dzielenie przez zero jest niedozwolone. \r\n");
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (comboBox1.Text == "potęgowanie")
+                                            {
+                                                double c = Math.Pow(a, b);
+                                                if (Double.IsInfinity(c))
+                                                {
+                                                    richTextBox1.AppendText("Kolejny wynik jest za duży aby go wypisać. \r\n");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    richTextBox1.AppendText(a + "^" + b + "=" + c + "\r\n");
+                                                    b = c;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (comboBox1.Text == "odejmowanie")
+                                                {
+                                                    double c = a - b;
+                                                    richTextBox1.AppendText(a + "-" + b + "=" + c + "\r\n");
+                                                    b = c;
+                                                }
+                                                else richTextBox1.Text = "Wybrano błędne działanie. \r\n";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (FormatException)
+                            {
+                                richTextBox1.AppendText("Błędne dane w pliku xml. \r\n");
+                            }
+                            nrzestawu = nrzestawu + 1;
                         }
-
-                        nrzestawu = nrzestawu + 1;
-
                     }
                 }
             }
             catch (FormatException)
             {
                 if (comboBox1.Text == "mnożenie" || comboBox1.Text == "dzielenie" || comboBox1.Text == "potęgowanie" || comboBox1.Text == "odejmowanie")
+                {
                     richTextBox1.Text = "Wpisano błędną ilość działań. \r\n";
+                }
                 else
                 {
                     richTextBox1.Text = "Wybrano błędne działanie i wpisano błędną ilość działań. ";
@@ -137,42 +214,10 @@ namespace WindowsFormsApp2
             }
 
             string path = @"log.txt";
-            if (!File.Exists(path))
+            using (StreamWriter sw = File.AppendText(path))
             {
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.Write(richTextBox1.Text);
-                }
+                sw.Write(richTextBox1.Text);
             }
-            else
-            {
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    sw.Write(richTextBox1.Text);
-                }
-            }
-
-
-        }
-
-        private void Button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox2_TextChanged_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

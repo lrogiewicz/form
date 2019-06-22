@@ -58,6 +58,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "mnożenie",
@@ -100,7 +101,6 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(217, 20);
             this.textBox2.TabIndex = 15;
-            this.textBox2.TextChanged += new System.EventHandler(this.TextBox2_TextChanged_1);
             // 
             // label3
             // 
